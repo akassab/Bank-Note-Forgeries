@@ -178,7 +178,7 @@ class LeakyReLU(Activation):
         '''
         #### YOUR CODE HERE ####
         '''
-        return x
+        return np.add(np.fmax(x, 0), np.fmin(0, self.k*x))
 
     def derivative(self, x: np.ndarray) -> np.ndarray:
         '''
@@ -190,7 +190,12 @@ class LeakyReLU(Activation):
         '''
         #### YOUR CODE HERE ####
         '''
-        return x
+        def derivative_function(x):
+            if x <= 0:
+                return self.k
+            else:
+                return 1
+        return np.vectorize(derivative_function)(x)
 
 ##################################################################################################################
 # LOSS FUNCTIONS
