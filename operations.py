@@ -106,7 +106,7 @@ class Tanh(Activation):
         '''
         #### YOUR CODE HERE ####
         '''
-        return x
+        return np.tanh(x)
 
     def derivative(self, x: np.ndarray) -> np.ndarray:
         '''
@@ -117,7 +117,7 @@ class Tanh(Activation):
         '''
         #### YOUR CODE HERE ####
         '''
-        return x
+        return np.power(np.cosh(x), -2)
 
 class ReLU(Activation):
     '''
@@ -136,7 +136,8 @@ class ReLU(Activation):
         '''
         #### YOUR CODE HERE ####
         '''
-        return x
+        return np.fmax(x, 0)
+        
 
     def derivative(self, x: np.ndarray) -> np.ndarray:
         '''
@@ -148,7 +149,12 @@ class ReLU(Activation):
         '''
         #### YOUR CODE HERE ####
         '''
-        return x
+        def derivative_function(x):
+            if x <= 0:
+                return 0
+            else:
+                return 1
+        return np.vectorize(derivative_function)(x)
 
 class LeakyReLU(Activation):
     '''
