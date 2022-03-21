@@ -1,6 +1,7 @@
 # version 1.4
 
 from abc import ABC, abstractmethod, abstractproperty
+from cmath import exp
 
 import numpy as np
 
@@ -75,7 +76,7 @@ class Sigmoid(Activation):
         '''
         #### YOUR CODE HERE ####
         '''
-        return x
+        return np.power(np.add(np.exp(np.multiply(x, -self.k)), 1),-1)
 
     def derivative(self, x: np.ndarray) -> np.ndarray:
         '''
@@ -86,7 +87,7 @@ class Sigmoid(Activation):
         '''
         #### YOUR CODE HERE ####
         '''
-        return x
+        return np.multiply(np.power(self.value(x), 2), np.exp(np.multiply(x, -self.k)))
 
 class Tanh(Activation):
     '''
