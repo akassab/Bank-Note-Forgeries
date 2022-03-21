@@ -272,7 +272,7 @@ class MeanSquaredError(Loss):
         '''
         #### YOUR CODE HERE ####
         '''
-        return y_hat
+        return np.sum(np.power(np.subtract(y_hat, y), 2))/len(y)
 
     def derivative(self, y_hat: np.ndarray, y: np.ndarray) -> np.ndarray:
         '''
@@ -284,7 +284,7 @@ class MeanSquaredError(Loss):
         '''
         #### YOUR CODE HERE ####
         '''
-        return y_hat
+        return np.multiply(np.subtract(y_hat, y),2)
 
 
 ##################################################################################################################
