@@ -284,7 +284,7 @@ class MeanSquaredError(Loss):
         '''
         #### YOUR CODE HERE ####
         '''
-        return np.multiply(np.subtract(y_hat, y),2)
+        return np.multiply(np.subtract(y_hat, y),2)/len(y)
 
 
 ##################################################################################################################
