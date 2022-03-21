@@ -241,7 +241,8 @@ class CrossEntropy(Loss):
         '''
         #### YOUR CODE HERE ####
         '''
-        return y_hat
+   
+        return np.sum(np.negative(np.add(np.multiply(y, np.log(y_hat)), np.multiply(np.subtract(1, y), np.log(np.subtract(1,y_hat))))))/len(y)
 
     def derivative(self, y_hat: np.ndarray, y: np.ndarray) -> np.ndarray:
         '''
@@ -253,8 +254,8 @@ class CrossEntropy(Loss):
         '''
         '''
         #### YOUR CODE HERE ####
-        '''
-        return y_hat
+        ''',
+        return np.divide(np.add(np.negative(np.divide(y, y_hat)), np.divide(np.subtract(1, y), np.subtract(1, y_hat))), len(y))
 
 
 class MeanSquaredError(Loss):
