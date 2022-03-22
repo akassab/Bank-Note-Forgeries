@@ -305,7 +305,19 @@ def accuracy(y_hat: np.ndarray, y: np.ndarray, classification_threshold=0.5) -> 
     '''
     #### YOUR CODE HERE ####
     '''
-    return 0.
+    def accuracy_helper(x):
+        if x >= classification_threshold:
+            return 1
+        else:
+            return 0
+
+    y_hat_threshold = np.vectorize(accuracy_helper)(y_hat)
+    num = len(y)
+    count = 0
+    for i in range(num):
+        if y_hat_threshold[i] == y[i]:
+            count += 1
+    return count / num
 
 def mean_absolute_error(y_hat: np.ndarray, y: np.ndarray) -> float:
     '''
@@ -318,4 +330,5 @@ def mean_absolute_error(y_hat: np.ndarray, y: np.ndarray) -> float:
     '''
     #### YOUR CODE HERE ####
     '''
-    return 0.
+    
+    return np.sum(np.absolute(np.subtract(y_hat, y)))/len(y)
