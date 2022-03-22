@@ -149,12 +149,12 @@ class ReLU(Activation):
         '''
         #### YOUR CODE HERE ####
         '''
-        def derivative_function(x):
+        def derivative_helper(x):
             if x <= 0:
                 return 0
             else:
                 return 1
-        return np.vectorize(derivative_function)(x)
+        return np.vectorize(derivative_helper)(x)
 
 class LeakyReLU(Activation):
     '''
@@ -190,12 +190,12 @@ class LeakyReLU(Activation):
         '''
         #### YOUR CODE HERE ####
         '''
-        def derivative_function(x):
+        def derivative_helper(x):
             if x <= 0:
                 return self.k
             else:
                 return 1
-        return np.vectorize(derivative_function)(x)
+        return np.vectorize(derivative_helper)(x)
 
 ##################################################################################################################
 # LOSS FUNCTIONS
