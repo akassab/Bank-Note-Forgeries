@@ -17,7 +17,7 @@ X, y = load_dataset("data/banknote_authentication.csv", "target")
 #X, y = load_dataset("data/wine_quality.csv", "quality")
 
 n_features = X.shape[1]
-net = NeuralNetwork(n_features, [32,32,16,1], [ReLU(), ReLU(), ReLU(), Sigmoid()], CrossEntropy(), learning_rate=0.01)
+net = NeuralNetwork(n_features, [2,2], [Sigmoid(),Sigmoid()], CrossEntropy(), learning_rate=0.01)
 epochs = 1000
 
 test_split = 0.1
