@@ -59,11 +59,6 @@ class NeuralNetwork():
                 Z_vals: a list of z-values for each example in the dataset. There are n_layers items in the list and
                         each item is an array of size (n, layer_sizes[i])
         '''
-
-        #####################################
-        # YOUR CODE HERE
-        #####################################
-
         nExamples = len(X)
         nFeatures = X.shape[1]
 
@@ -84,15 +79,6 @@ class NeuralNetwork():
         i_layer = 0
         i_layer_size = len(self.W[i_layer][0])
 
-        """
-        print("X")
-        print(X)
-        print("Ws")
-        print(self.W)
-        print("n_layers")
-        print(self.n_layers)
-        """
-
         # base case
         for i_example in range(nExamples):
             # init a_values base case
@@ -104,16 +90,6 @@ class NeuralNetwork():
             # init g_values base case
             z_vals[i_layer].append(self.activations[i_layer].value(a_vals[i_layer][i_example]))
         
-        """
-        print("a vals")
-        print(a_vals)
-        print("z vals")
-        print(z_vals)
-
-        print("a0 layer 2, example 0 should be")
-        a_1_0_0 = self.W[i_layer+1][0][0] + (z_vals[i_layer][0][0] * self.W[i_layer+1][1][0] ) + (z_vals[i_layer][0][1]* self.W[i_layer+1][2][0]) + (z_vals[i_layer][0][2] * self.W[i_layer+1][3][0]) + (z_vals[i_layer][0][3] * self.W[i_layer+1][4][0])
-        print(a_1_0_0)
-        """
         # standard case
         i_layer += 1
         if i_layer != self.n_layers:
@@ -145,29 +121,16 @@ class NeuralNetwork():
         :return deltas: A list of delta values for each layer. There are n_layers items in the list and
                         each item is an array of size (n, layer_sizes[i])
         '''
-  
-
         nExamples = len(A_vals[0])
         def init_deltas():
             deltas = []
             for i_layer in range(self.n_layers):
-                layer_size = len(self.W[i_layer][i_layer])
+                layer_size = len(self.W[i_layer][0])
                 deltas.append([ [ 0 for i_neuron in range(layer_size) ] for i_example in range(nExamples) ])
             return deltas
         
         deltas = init_deltas()
-        
-        """
-
-        print("A Vals")
-        print(A_vals)
-        print("DlDyhat")
-        print(dLdyhat)
-        print("weights")
-        print(self.W)
-
-        """
-
+   
         # base case (last layer)
         i_layer = self.n_layers-1
         i_layer_size = len(self.W[i_layer][-1])
@@ -175,13 +138,6 @@ class NeuralNetwork():
             neuron_derivatives = self.activations[i_layer].derivative(A_vals[i_layer][i_example])
             for i_neuron in range(i_layer_size):
                 deltas[i_layer][i_example][i_neuron] = dLdyhat[i_example][i_neuron] * neuron_derivatives[i_neuron]
-
-        """
-        print("deltas after base")
-        print()
-        print(deltas)
-
-        """
 
         # standard case
         i_layer -= 1
@@ -201,18 +157,6 @@ class NeuralNetwork():
                         deltas[i_layer][i_example][i_neuron] *= neuron_derivatives[i_neuron]
                 i_layer -= 1
 
-        """
-        print('dir')
-        print(self.activations[0].derivative(A_vals[0][0]))
-        print("delta")
-        delta0 = ((self.W[1][1][0]* deltas[1][0][0]) + (self.W[1][1][1]*deltas[1][0][1])) * self.activations[0].derivative(A_vals[0][0])[1]
-        delt1 = ((self.W[1][0][0]* deltas[1][0][0]) + (self.W[1][0][1]*deltas[1][0][1])) * self.activations[0].derivative(A_vals[0][0])[0]
-        print(delta0)
-        print(delt1)
-
-        # print deltas after
-        print(deltas)
-        """
         return deltas
 
     def update_weights(self, X, Z_vals, deltas) -> List[np.ndarray]:
@@ -226,14 +170,36 @@ class NeuralNetwork():
                        each item is an array of size (n, layer_sizes[i])
         :return W: The newly updated weights (i.e. self.W)
         '''
+        nExamples = len(X)
+  
+        w = self.W
 
-        #####################################
-        # YOUR CODE HERE
-        #####################################
+        # base case use X
+        i_layer = 0
+        i_layer_size = len(self.W[i_layer])
+        j_layer_size = len(self.W[i_layer][0])
+        for i_example in range(nExamples):
+            for i in range(i_layer_size):
+                for j in range(j_layer_size):
+                    delta = deltas[i_layer][i_example][j]
+                    x = X[i_example, i - 1] if i > 0 else 1
+                    w[i_layer][i][j] -= self.learning_rate *( delta* x)
 
+        
+        i_layer += 1
+        if i_layer != self.n_layers:
 
-
-        return None
+            while (i_layer < self.n_layers):
+                i_layer_size = len(self.W[i_layer])
+                j_layer_size = len(self.W[i_layer][0])
+                for i_example in range(nExamples):
+                    for i in range(i_layer_size):
+                        for j in range(j_layer_size):
+                            delta = deltas[i_layer][i_example][j]
+                            z = Z_vals[i_layer][i_example][i]
+                            w[i_layer][i][j] -= self.learning_rate *( delta* z)
+                i_layer += 1
+        return w
 
     def train(self, X: np.ndarray, y: np.ndarray, epochs: int) -> (List[np.ndarray], List[float]):
         '''
