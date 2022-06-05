@@ -14,7 +14,7 @@ def load_dataset(csv_path, target_feature):
     return X, t
 
 X, y = load_dataset("data/banknote_authentication.csv", "target")
-#X, y = load_dataset("data/wine_quality.csv", "quality")
+#X, y = load_dataset("data/drink_quality.csv", "quality")
 
 n_features = X.shape[1]
 net = NeuralNetwork(n_features, [2,2], [Sigmoid(),Sigmoid()], CrossEntropy(), learning_rate=0.01)
